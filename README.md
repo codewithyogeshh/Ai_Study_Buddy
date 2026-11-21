@@ -6,11 +6,11 @@ Upload your study material, and get an AI summary, study notes, a grounded chat 
 oral-exam (viva) practice, flashcards, a study planner and progress analytics — in English, Marathi or
 Hindi.
 
-[![Live Demo](https://img.shields.io/badge/%F0%9F%9A%80%20Live%20Demo-Visit%20Site-4f46e5?style=for-the-badge)](https://ai-study-buddy-three-orpin.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/%F0%9F%9A%80%20Live%20Demo-Visit%20Site-4f46e5?style=for-the-badge)](https://ai-study-buddy-live.vercel.app/)
 
 ## 🔗 Live Demo
 
-**https://ai-study-buddy-three-orpin.vercel.app/**
+**https://ai-study-buddy-live.vercel.app/**
 
 ![AI Study Buddy landing page on the live site](docs/live-site.png)
 

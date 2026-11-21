@@ -1,0 +1,297 @@
+@import 'tailwindcss';
+
+/*
+  AI Study Buddy design tokens. A calm, near-monochrome product surface with a
+  single indigo accent. Light and dark are the same tokens with different
+  values, so every component works in both without per-theme classes.
+*/
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f6f6f8;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f4f4f7;
+  --surface-3: #ececf1;
+  --border: #e4e4ea;
+  --border-strong: #d3d3dc;
+  --text: #16161c;
+  --text-soft: #3d3d49;
+  --muted: #6d6d7b;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-soft: #eef2ff;
+  --primary-contrast: #ffffff;
+  --success: #15803d;
+  --success-soft: #dcfce7;
+  --warn: #a16207;
+  --warn-soft: #fef3c7;
+  --danger: #b91c1c;
+  --danger-soft: #fee2e2;
+  --ring: rgb(79 70 229 / 0.35);
+  --shadow-sm: 0 1px 2px rgb(16 16 24 / 0.05), 0 1px 3px rgb(16 16 24 / 0.04);
+  --shadow-md: 0 6px 16px -6px rgb(16 16 24 / 0.12), 0 2px 6px -2px rgb(16 16 24 / 0.06);
+  --shadow-lg: 0 24px 60px -24px rgb(16 16 24 / 0.28);
+  --hero-glow: radial-gradient(60% 60% at 50% 0%, rgb(79 70 229 / 0.18), transparent 70%);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0a0a0e;
+  --bg-elevated: #111117;
+  --surface: #14141b;
+  --surface-2: #1b1b24;
+  --surface-3: #23232f;
+  --border: #26262f;
+  --border-strong: #34343f;
+  --text: #f1f1f5;
+  --text-soft: #d3d3dd;
+  --muted: #9a9aaa;
+  --primary: #818cf8;
+  --primary-hover: #a5b4fc;
+  --primary-soft: #1e1b4b;
+  --primary-contrast: #0b0b12;
+  --success: #4ade80;
+  --success-soft: #052e16;
+  --warn: #fbbf24;
+  --warn-soft: #2c1f05;
+  --danger: #f87171;
+  --danger-soft: #3f1212;
+  --ring: rgb(129 140 248 / 0.45);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 8px 24px -10px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 30px 70px -30px rgb(0 0 0 / 0.8);
+  --hero-glow: radial-gradient(60% 60% at 50% 0%, rgb(129 140 248 / 0.16), transparent 70%);
+}
+
+@theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans Devanagari', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-ink-soft: var(--text-soft);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--primary-contrast);
+  --color-ok: var(--success);
+  --color-ok-soft: var(--success-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--danger);
+  --color-bad-soft: var(--danger-soft);
+
+  --radius-card: 16px;
+  --shadow-soft: var(--shadow-sm);
+  --shadow-raised: var(--shadow-md);
+  --shadow-float: var(--shadow-lg);
+
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-in: fade-in 0.3s ease both;
+  --animate-pulse-soft: pulse-soft 1.6s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'cv02', 'cv03', 'cv04';
+}
+::selection {
+  background: var(--primary);
+  color: var(--primary-contrast);
+}
+* {
+  border-color: var(--border);
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.hero-glow {
+  background-image: var(--hero-glow);
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Flashcard flip */
+.flip-scene {
+  perspective: 1400px;
+}
+.flip-card {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.flip-card[data-flipped='true'] {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+.typing-dot {
+  animation: pulse-soft 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.prose-note h1,
+.prose-note h2,
+.prose-note h3 {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  margin: 1.1em 0 0.45em;
+  line-height: 1.3;
+}
+.prose-note h1 {
+  font-size: 1.35rem;
+}
+.prose-note h2 {
+  font-size: 1.15rem;
+}
+.prose-note h3 {
+  font-size: 1rem;
+}
+.prose-note p {
+  margin: 0.55em 0;
+}
+.prose-note ul,
+.prose-note ol {
+  margin: 0.5em 0;
+  padding-left: 1.3em;
+}
+.prose-note ul {
+  list-style: disc;
+}
+.prose-note ol {
+  list-style: decimal;
+}
+.prose-note li {
+  margin: 0.25em 0;
+}
+.prose-note strong {
+  font-weight: 650;
+  color: var(--text);
+}
+.prose-note code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 0.1em 0.35em;
+  border-radius: 6px;
+}
+.prose-note pre {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem;
+  overflow-x: auto;
+  margin: 0.7em 0;
+}
+.prose-note pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.prose-note blockquote {
+  border-left: 3px solid var(--primary);
+  padding-left: 0.8rem;
+  color: var(--muted);
+  margin: 0.7em 0;
+}
+.prose-note hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 1.2em 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

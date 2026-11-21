@@ -1,32 +1,40 @@
 # 🎓 AI Study Buddy
 
-An AI-powered study companion that helps you learn faster — ask questions, get simple explanations, and revise smarter.
+**Study Smarter. Learn Faster. Remember Better.**
 
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Visit%20Site-4f46e5?style=for-the-badge)](https://ai-study-buddy-knadnf.freebuff.site/)
+Your personal AI study companion that turns your PDFs into notes, quizzes, flashcards and interactive learning experiences — all in one place.
+
+[![Live Demo](https://img.shields.io/badge/%F0%9F%9A%80%20Live%20Demo-Visit%20Site-4f46e5?style=for-the-badge)](https://ai-study-buddy-knadnf.freebuff.site/)
 
 ## 🔗 Live Demo
 
 **https://ai-study-buddy-knadnf.freebuff.site/**
 
-No installation needed — just open the link and start studying.
+Create a free account, upload your first chapter, and get your summary, notes and a practice quiz in minutes.
 
 ## 💡 What is AI Study Buddy?
 
-AI Study Buddy is a web app built for students. It uses AI to explain difficult topics in easy language, so you can understand concepts instead of just memorising them. Whether you are preparing for exams or learning something new, your study buddy is available anytime.
+Most students juggle five different apps to read, revise, test themselves and plan. AI Study Buddy replaces all of them: everything is generated from the same uploaded material, so nothing gets lost between apps and your notes actually match what you are being examined on.
 
 ## ✨ Features
 
-- **Instant answers** — ask any study question and get a clear, beginner-friendly explanation
-- **Concept breakdowns** — complex topics explained step by step with simple examples
-- **Revision help** — quick summaries you can read before an exam
-- **Practice questions** — test yourself on what you just learned
-- **Anywhere access** — works in the browser on mobile, tablet and desktop, 24/7
+- **📄 Document upload** — add your PDFs and chapters once; every feature works from that material
+- **📝 AI summaries & notes** — clear, exam-ready notes generated from your own documents
+- **💬 AI chat** — ask follow-up questions about the material you uploaded
+- **❓ Practice quizzes** — test yourself on what you just studied
+- **🗂️ Flashcards** — quick revision cards for the topics that keep slipping away
+- **🎤 Viva practice** — rehearse oral exam questions before the real thing
+- **📈 Progress tracking** — see how your preparation is moving across subjects
+- **🖥️ One study space** — dashboard, documents, notes, quizzes, flashcards and progress in a single app
 
-## 🚀 Try it out
+## 🚀 How it works
 
 1. Open the [live demo](https://ai-study-buddy-knadnf.freebuff.site/)
-2. Type a topic or question you are stuck on
-3. Read the explanation and keep asking follow-up questions until it clicks
+2. Create a free account
+3. Upload a chapter or PDF
+4. Read the summary and notes, then practise with quizzes, flashcards and viva questions
+
+It runs in the browser on mobile, tablet and desktop — nothing to install.
 
 ## 🤝 Feedback
 

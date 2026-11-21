@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build && node scripts/postbuild.mjs && node scripts/build-api.mjs",
+    "build": "vite build && node scripts/postbuild.mjs",
+    "build:vercel": "npm run build && node scripts/build-vercel-output.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "bun test",

@@ -3,15 +3,14 @@ import type { Bindings } from '../src/worker/types'
 import app from '../src/worker/index'
 
 /**
- * Vercel entry point. `scripts/build-api.mjs` bundles this file into
- * `api/index.js` (the file Vercel deploys as a Node function) after the SPA
- * build, because Vercel transpiles TypeScript file-by-file and would leave the
- * app's extensionless ESM imports unresolvable at runtime.
+ * Vercel entry point. `scripts/build-vercel-output.mjs` bundles this into
+ * `.vercel/output/functions/api.func/index.js`, the file Vercel runs at
+ * /api/*. It is bundled because Vercel transpiles TypeScript file by file and
+ * would leave the app's extensionless ESM imports unresolvable at runtime.
  *
- * `vercel.json` rewrites every /api/* request here; the built SPA and its
- * static files are served by Vercel itself, so the Worker's ASSETS fallback is
- * never used on this host. Values come from the project's environment
- * variables (Vercel → Settings → Environment Variables).
+ * The SPA and its static files are served by Vercel itself, so the Worker's
+ * ASSETS fallback is never used on this host. Values come from the project's
+ * environment variables (Vercel → Settings → Environment Variables).
  */
 const env: Bindings = {
   DB: createDb(),
@@ -23,8 +22,5 @@ const env: Bindings = {
   FRONTEND_URL: process.env.FRONTEND_URL,
 }
 
-export default {
-  async fetch(request: Request): Promise<Response> {
-    return app.fetch(request, env)
-  },
-}
+/** Vercel's Node launcher calls the `fetch` export for Web-standard handlers. */
+export const fetch = async (request: Request): Promise<Response> => app.fetch(request, env)

@@ -6,13 +6,19 @@ Upload your study material, and get an AI summary, study notes, a grounded chat 
 oral-exam (viva) practice, flashcards, a study planner and progress analytics — in English, Marathi or
 Hindi.
 
-[![Live Demo](https://img.shields.io/badge/%F0%9F%9A%80%20Live%20Demo-Visit%20Site-4f46e5?style=for-the-badge)](https://ai-study-buddy-knadnf.freebuff.site/)
+[![Live Demo](https://img.shields.io/badge/%F0%9F%9A%80%20Live%20Demo-Visit%20Site-4f46e5?style=for-the-badge)](https://ai-study-buddy-three-orpin.vercel.app/)
 
 ## 🔗 Live Demo
 
-**https://ai-study-buddy-knadnf.freebuff.site/**
+**https://ai-study-buddy-three-orpin.vercel.app/**
 
-Create a free account, upload your first chapter, and get your summary, notes and a practice quiz in minutes.
+Deployed on **Vercel**: the React SPA is served as static files and the Hono API runs as one Node
+function, with a **Neon Postgres** database connected through Vercel Storage (`DATABASE_URL` is injected
+by the integration). Create a free account, upload your first chapter, and get your summary, notes and a
+practice quiz in minutes.
+
+> AI features need `GEMINI_API_KEY` in the Vercel project's environment variables. Without it the app
+> still works for uploads, extraction, saved content and all history; AI endpoints return a clear `503`.
 
 ---
 
@@ -30,8 +36,8 @@ Rather than ship Java that can never compile, run, or be deployed here, the same
 | Requested | Implemented here | Why |
 |---|---|---|
 | React, TypeScript, Vite, Tailwind, Lucide | Same (React 19, Vite 8, TS, Tailwind 4, Lucide) | Runs as requested |
-| Java + Spring Boot REST API | Hono (TypeScript) on Cloudflare Workers, same REST contract | No JVM in the workspace; Workers is the deploy target |
-| MongoDB Atlas collections | D1 (SQLite) tables with the same entities, ownership indexes and JSON documents | No MongoDB host; D1 is the platform database |
+| Java + Spring Boot REST API | Hono (TypeScript), same REST contract — Cloudflare Workers, or a Vercel Node function | No JVM in the workspace |
+| MongoDB Atlas collections | SQL tables with the same entities, ownership indexes and JSON documents — D1 (SQLite) on Cloudflare, Postgres on Vercel | No MongoDB host |
 | BCrypt | PBKDF2-SHA256, 100k iterations (WebCrypto) | No native bcrypt on Workers; runtime caps PBKDF2 at 100k |
 | Apache PDFBox | `unpdf` (PDF.js) + `fflate` for DOCX | PDFBox is JVM-only |
 | JWT (Spring Security) | Hand-rolled HS256 JWT verified in middleware | Equivalent behaviour, no dependency |
@@ -72,8 +78,11 @@ map 1:1 to Spring `@RestController` classes and `src/worker/db.ts` maps to Mongo
 ## Stack
 
 - **Frontend**: React 19, TypeScript, Vite 8, Tailwind CSS 4, React Router 8, Lucide icons.
-- **Backend**: Hono on Cloudflare Workers (`src/worker`), strict DTO validation, structured errors.
-- **Database**: Cloudflare D1 (SQLite) with per-user indexes and JSON columns for generated content.
+- **Backend**: Hono (`src/worker`), strict DTO validation, structured errors. Runs on Cloudflare Workers
+  or as a single Vercel Node function (`server/vercel.ts` → `.vercel/output`).
+- **Database**: Cloudflare D1 (SQLite) on the Workers build, **Postgres** on the Vercel build
+  (`src/worker/pg.ts` implements the same prepared-statement surface the routes already use), per-user
+  indexes and JSON columns for generated content.
 - **AI**: Google Gemini `generateContent` REST API, default model `gemini-3.5-flash-lite` (configurable via `GEMINI_MODEL`; `gemini-3.8-flash` works but is often saturated on the free tier). Requests use `thinkingConfig.thinkingLevel = "low"` for latency and retry twice on 429/5xx.
 - **Documents**: PDF.js via `unpdf`, DOCX via `fflate` + OOXML text extraction.
 
@@ -113,6 +122,7 @@ are generated.** Use `GET /api/ai/status` to check configuration.
 | Variable | Required | Purpose |
 |---|---|---|
 | `JWT_SECRET` | yes | HS256 signing key (32+ random bytes) |
+| `DATABASE_URL` | on Vercel | Postgres connection string (injected by the Vercel/Neon storage integration) |
 | `GEMINI_API_KEY` | for AI | Server-side Gemini key |
 | `GEMINI_MODEL` | no | Defaults to `gemini-3.5-flash-lite` (e.g. `gemini-3.8-flash`) |
 | `FRONTEND_URL` | no | Comma-separated CORS origins; localhost always allowed |
@@ -161,7 +171,8 @@ Errors are JSON `{ "error": "..." }` with `400` validation, `401` auth, `403` ow
 `users`, `documents`, `notes`, `chats`, `quizzes`, `flashcards`, `study_tasks`, `study_sessions`,
 `viva_sessions`, `password_resets`, `ai_usage` — defined in `src/worker/db.ts` with indexes on
 `(user_id, created_at/upload_date)` for every user-owned table. Generated content (quiz questions,
-chat messages, analysis, flashcards, viva evaluations) is stored as validated JSON text.
+chat messages, analysis, flashcards, viva evaluations) is stored as validated JSON text. The same tables
+are created on Postgres at the first request on Vercel.
 
 ## Security
 
@@ -192,7 +203,26 @@ Two harnesses exercise the running app over HTTP:
 
 ## Deployment
 
-### This build (Cloudflare Workers + D1)
+### Vercel (this live site)
+
+The Vercel build is described by `vercel.json` + `scripts/build-vercel-output.mjs`, which produces
+Vercel's Build Output API layout:
+
+- `api/index.js` — the Hono API compiled to one CommonJS function from `server/vercel.ts`
+  (esbuild bundling is required because Vercel transpiles TypeScript per file and the app uses
+  extensionless ESM imports).
+- `index.html` + `assets/*` — the static SPA from `vite build`.
+
+Steps to reproduce:
+
+1. Import the repo on Vercel (framework: *Other*, build command `npm run build:vercel`).
+2. Add storage: **Storage → Neon** (free plan) and connect it to the project — this injects
+   `DATABASE_URL` (plus the `POSTGRES_*` aliases).
+3. Set `JWT_SECRET` (32+ random bytes) and, for AI features, `GEMINI_API_KEY`.
+4. Deploy, then check `/api/health` → `{"ok":true,...,"checks":{"database":"ready","auth":true}}`
+   and `/api/ai/status`.
+
+### Cloudflare Workers + D1
 
 1. Create/pick a Sites project, add a D1 binding named `DB` for the environment.
 2. Set `JWT_SECRET` (and `GEMINI_API_KEY`) as secrets for that environment.
@@ -206,7 +236,7 @@ Two harnesses exercise the running app over HTTP:
 1. Create a MongoDB Atlas cluster, a database user, and allow your host's IP.
 2. Set `MONGODB_URI`, `JWT_SECRET`, `GEMINI_API_KEY`, `FRONTEND_URL` on Render (or any Java host).
 3. Build with Maven (`mvn -DskipTests package`) and run the jar; health check `/api/health`.
-4. Point `FRONTEND_URL` at the deployed SPA origin and deploy the SPA to Vercel/Netlify
+4. Point `FRONTEND_URL` at the deployed SPA origin and deploy the SPA wherever you like
    (`bun run build`, output `dist/client`, SPA fallback to `index.html`).
 5. Keep the API contract above unchanged so this frontend works as-is.
 
@@ -220,6 +250,8 @@ Two harnesses exercise the running app over HTTP:
 - **AI responses are returned in one piece**, not token-streamed; the UI shows a typing indicator.
 - **Rate limits are per Worker isolate and per day**, so they are best-effort across many instances.
 - Viva dictation and read-aloud depend on the browser's Web Speech support (Chrome/Edge/Safari).
+- **On Vercel, request bodies are capped at ~4.5 MB** by the platform, so a PDF near the app's 15 MB
+  limit has to be uploaded on the Cloudflare build instead.
 
 ---
 

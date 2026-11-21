@@ -6,6 +6,14 @@ Upload your study material, and get an AI summary, study notes, a grounded chat 
 oral-exam (viva) practice, flashcards, a study planner and progress analytics — in English, Marathi or
 Hindi.
 
+[![Live Demo](https://img.shields.io/badge/%F0%9F%9A%80%20Live%20Demo-Visit%20Site-4f46e5?style=for-the-badge)](https://ai-study-buddy-knadnf.freebuff.site/)
+
+## 🔗 Live Demo
+
+**https://ai-study-buddy-knadnf.freebuff.site/**
+
+Create a free account, upload your first chapter, and get your summary, notes and a practice quiz in minutes.
+
 ---
 
 ## Runtime note (read first)
@@ -212,3 +220,7 @@ Two harnesses exercise the running app over HTTP:
 - **AI responses are returned in one piece**, not token-streamed; the UI shows a typing indicator.
 - **Rate limits are per Worker isolate and per day**, so they are best-effort across many instances.
 - Viva dictation and read-aloud depend on the browser's Web Speech support (Chrome/Edge/Safari).
+
+---
+
+Made with ❤️ by [Yogesh Chavan](https://github.com/codewithyogeshh)

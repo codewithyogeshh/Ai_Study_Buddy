@@ -1,7 +1,10 @@
+import type { Db } from './sql'
+
 /** Shared backend types and the bindings the Worker receives. */
 export type Bindings = {
-  ASSETS: Fetcher
-  DB: D1Database
+  /** Cloudflare static-asset binding; absent on Vercel, which serves the SPA itself. */
+  ASSETS?: Fetcher
+  DB: Db
   GEMINI_API_KEY?: string
   JWT_SECRET?: string
   FRONTEND_URL?: string

@@ -107,7 +107,11 @@ app.onError((err, c) => {
   return c.json({ error: 'Something went wrong on the server. Please try again.' }, 500)
 })
 
-// Anything that is not an API call is served by the SPA.
-app.all('*', (c) => c.env.ASSETS.fetch(c.req.raw))
+// Anything that is not an API call is served by the SPA. On Vercel the SPA and
+// its assets are served by the platform, so there is no ASSETS binding.
+app.all('*', (c) => {
+  if (!c.env.ASSETS) return c.json({ error: 'Not found.' }, 404)
+  return c.env.ASSETS.fetch(c.req.raw)
+})
 
 export default app

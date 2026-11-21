@@ -1,3 +1,5 @@
+import type { Db } from './sql'
+
 /**
  * Schema bootstrap. D1 has no migration runner at request time, and the app
  * must work in a fresh local database, so every table is created idempotently
@@ -137,7 +139,7 @@ CREATE TABLE IF NOT EXISTS ai_usage (
 
 let ready: Promise<void> | null = null
 
-export function ensureSchema(db: D1Database): Promise<void> {
+export function ensureSchema(db: Db): Promise<void> {
   if (!ready) {
     // D1's exec() splits on newlines, which breaks multi-line DDL, so each
     // statement is prepared and run individually instead.

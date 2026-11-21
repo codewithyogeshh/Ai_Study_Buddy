@@ -197,7 +197,7 @@ export async function enforceAiRateLimit(env: Bindings, userId: string): Promise
   }
   await env.DB.prepare(
     `INSERT INTO ai_usage (user_id, day, count) VALUES (?, ?, 1)
-     ON CONFLICT(user_id, day) DO UPDATE SET count = count + 1`,
+     ON CONFLICT(user_id, day) DO UPDATE SET count = ai_usage.count + 1`,
   )
     .bind(userId, day)
     .run()

@@ -12,6 +12,12 @@ Hindi.
 
 **https://ai-study-buddy-three-orpin.vercel.app/**
 
+![AI Study Buddy landing page on the live site](docs/live-site.png)
+
+*The live site as it renders at the URL above — captured by
+[`.github/workflows/live-screenshot.yml`](.github/workflows/live-screenshot.yml), which refreshes this
+image on demand and every Monday.*
+
 Deployed on **Vercel**: the React SPA is served as static files and the Hono API runs as one Node
 function, with a **Neon Postgres** database connected through Vercel Storage (`DATABASE_URL` is injected
 by the integration). Create a free account, upload your first chapter, and get your summary, notes and a
@@ -221,6 +227,10 @@ Steps to reproduce:
 3. Set `JWT_SECRET` (32+ random bytes) and, for AI features, `GEMINI_API_KEY`.
 4. Deploy, then check `/api/health` → `{"ok":true,...,"checks":{"database":"ready","auth":true}}`
    and `/api/ai/status`.
+
+The README screenshot comes from `scripts/screenshot.mjs` + `.github/workflows/live-screenshot.yml`,
+which uses Playwright against the deployed URL and commits `docs/live-site.png`. Run it from
+**Actions → Live site screenshot → Run workflow** to refresh the image.
 
 ### Cloudflare Workers + D1
 

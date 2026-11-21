@@ -3,7 +3,8 @@ import { createDb } from '../src/worker/pg'
 import type { Bindings } from '../src/worker/types'
 
 /**
- * Vercel Node.js function (web handler signature).
+ * Vercel Node.js function using the `fetch` Web Standard export, which is the
+ * form Vercel Functions support for frameworks other than Next.js.
  *
  * `vercel.json` rewrites every /api/* request here; the built SPA and its
  * static files are served by Vercel itself, so the Worker's ASSETS fallback is
@@ -20,6 +21,8 @@ const env: Bindings = {
   FRONTEND_URL: process.env.FRONTEND_URL,
 }
 
-export default async function handler(request: Request): Promise<Response> {
-  return app.fetch(request, env)
+export default {
+  async fetch(request: Request): Promise<Response> {
+    return app.fetch(request, env)
+  },
 }

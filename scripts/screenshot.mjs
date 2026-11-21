@@ -3,7 +3,7 @@
 import { mkdir } from 'node:fs/promises'
 import { chromium } from 'playwright'
 
-const url = process.env.SITE_URL || 'https://ai-study-buddy-three-orpin.vercel.app/'
+const url = process.env.SITE_URL || 'https://ai-study-buddy-live.vercel.app/'
 const out = 'docs/live-site.png'
 
 await mkdir('docs', { recursive: true })

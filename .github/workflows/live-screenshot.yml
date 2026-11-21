@@ -29,8 +29,10 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install the preview browser
-        run: npx --yes playwright@1.49.1 install --with-deps chromium
+      - name: Install Playwright
+        run: |
+          npm install --no-save --no-package-lock playwright@1.49.1
+          npx playwright install --with-deps chromium
 
       - name: Capture the live site
         run: node scripts/screenshot.mjs

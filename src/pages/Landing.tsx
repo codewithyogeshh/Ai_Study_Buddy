@@ -80,7 +80,7 @@ export function Landing() {
 
   return (
     <div className="min-h-dvh bg-bg">
-      <header className="sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b border-line/70 bg-bg/65 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
           <Logo to="/" />
           <nav className="hidden items-center gap-7 text-[13px] font-medium text-ink-soft md:flex">
@@ -125,15 +125,20 @@ export function Landing() {
 
       <main>
         {/* Hero */}
-        <section className="hero-glow relative overflow-hidden">
+        <section className="relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+            <div className="absolute -top-64 left-1/2 size-[860px] -translate-x-1/2 rounded-full bg-primary/20 blur-[150px] opacity-80" />
+            <div className="absolute -top-40 right-[-12%] size-[460px] rounded-full bg-accent/15 blur-[140px]" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          </div>
           <div className="mx-auto max-w-6xl px-4 pb-16 pt-14 sm:px-6 sm:pb-24 sm:pt-20">
             <div className="mx-auto max-w-3xl text-center">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary-soft px-3 py-1 text-[12px] font-medium text-primary">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary-soft/80 px-3 py-1 text-[12px] font-medium text-primary shadow-soft backdrop-blur-sm">
                 <Sparkles className="size-3.5" />
                 Your personal AI learning companion
               </span>
               <h1 className="mt-5 text-balance text-[34px] font-semibold leading-[1.08] tracking-[-0.035em] text-ink sm:text-[54px]">
-                Study Smarter. Learn Faster. <span className="text-primary">Remember Better.</span>
+                Study Smarter. Learn Faster. <span className="text-gradient">Remember Better.</span>
               </h1>
               <p className="mx-auto mt-5 max-w-2xl text-pretty text-[15px] leading-relaxed text-muted sm:text-[17px]">
                 Your personal AI study companion that transforms your PDFs into notes, quizzes, flashcards, and
@@ -164,7 +169,7 @@ export function Landing() {
 
             {/* Product preview */}
             <div className="mx-auto mt-14 max-w-5xl animate-fade-up">
-              <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-float">
+              <div className="overflow-hidden rounded-[22px] border border-line/80 bg-surface shadow-float ring-1 ring-black/5 dark:ring-white/5">
                 <div className="flex items-center gap-2 border-b border-line bg-surface-2/70 px-4 py-2.5">
                   <span className="size-2.5 rounded-full bg-bad/60" />
                   <span className="size-2.5 rounded-full bg-warn/60" />
@@ -241,9 +246,9 @@ export function Landing() {
               {features.map((feature) => (
                 <div
                   key={feature.title}
-                  className="rounded-2xl border border-line bg-surface p-5 shadow-soft transition hover:border-line-strong"
+                  className="group rounded-2xl border border-line bg-surface p-5 shadow-soft transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-line-strong hover:shadow-raised"
                 >
-                  <div className="flex size-9 items-center justify-center rounded-lg bg-primary-soft text-primary">
+                  <div className="flex size-9 items-center justify-center rounded-xl bg-primary-soft text-primary ring-1 ring-primary/10 transition-transform duration-300 group-hover:scale-105">
                     <feature.icon className="size-4.5" />
                   </div>
                   <h3 className="mt-4 text-[14.5px] font-semibold text-ink">{feature.title}</h3>
@@ -274,8 +279,8 @@ export function Landing() {
               </div>
               <ol className="relative space-y-4 border-l border-line pl-6">
                 {steps.map((step, i) => (
-                  <li key={step.title} className="relative rounded-xl border border-line bg-surface p-5 shadow-soft">
-                    <span className="absolute -left-[35px] top-5 flex size-6 items-center justify-center rounded-full border border-line bg-bg-elevated text-[11px] font-semibold text-primary">
+                  <li key={step.title} className="relative rounded-2xl border border-line bg-surface p-5 shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-raised">
+                    <span className="absolute -left-[35px] top-5 flex size-6 items-center justify-center rounded-full border border-primary/20 bg-primary-soft text-[11px] font-semibold text-primary shadow-soft">
                       {i + 1}
                     </span>
                     <h3 className="text-[14px] font-semibold text-ink">{step.title}</h3>
@@ -309,7 +314,7 @@ export function Landing() {
             </div>
             <ul className="grid gap-2.5 sm:grid-cols-2">
               {capabilities.map((capability) => (
-                <li key={capability} className="flex items-start gap-2 rounded-lg border border-line bg-surface px-3 py-2.5 text-[12.5px] text-ink-soft">
+                <li key={capability} className="flex items-start gap-2 rounded-xl border border-line bg-surface px-3 py-2.5 text-[12.5px] text-ink-soft transition-colors duration-200 hover:border-primary/25 hover:text-ink">
                   <Check className="mt-0.5 size-3.5 shrink-0 text-primary" />
                   {capability}
                 </li>
@@ -339,7 +344,7 @@ export function Landing() {
                   body: 'The planner respects your available hours and exam date, with revision slots and rest days.',
                 },
               ].map((benefit) => (
-                <div key={benefit.title} className="rounded-2xl border border-line bg-surface p-6 shadow-soft">
+                <div key={benefit.title} className="rounded-2xl border border-line bg-surface p-6 shadow-soft transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-line-strong hover:shadow-raised">
                   <benefit.icon className="size-5 text-primary" />
                   <h3 className="mt-3 text-[15px] font-semibold text-ink">{benefit.title}</h3>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{benefit.body}</p>
@@ -347,7 +352,12 @@ export function Landing() {
               ))}
             </div>
 
-            <div className="mt-12 overflow-hidden rounded-2xl border border-line bg-primary px-6 py-10 text-center shadow-raised sm:px-12">
+            <div className="btn-primary relative mt-12 overflow-hidden rounded-3xl border border-white/10 px-6 py-12 text-center sm:px-12">
+              <div
+                className="pointer-events-none absolute inset-0 opacity-60"
+                aria-hidden
+                style={{ background: 'radial-gradient(70% 120% at 50% -20%, rgb(255 255 255 / 0.28), transparent 60%)' }}
+              />
               <h2 className="text-[24px] font-semibold tracking-[-0.02em] text-on-primary sm:text-[30px]">
                 Your next exam starts with one upload
               </h2>
@@ -357,7 +367,7 @@ export function Landing() {
               </p>
               <Link
                 to={startPath}
-                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-bg-elevated px-5 py-2.5 text-[13.5px] font-medium text-primary shadow-soft transition hover:bg-surface"
+                className="relative mt-6 inline-flex items-center gap-2 rounded-xl bg-bg-elevated px-5 py-2.5 text-[13.5px] font-medium text-primary shadow-soft transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-raised active:translate-y-0"
               >
                 {user ? 'Open your dashboard' : 'Create your free account'}
                 <ArrowRight className="size-4" />

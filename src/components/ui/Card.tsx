@@ -6,7 +6,10 @@ import { cn } from '../../lib/cn'
 export function Card({ className, children, ...props }: { className?: string; children: ReactNode } & React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('min-w-0 rounded-2xl border border-line bg-surface shadow-soft', className)}
+      className={cn(
+        'min-w-0 rounded-2xl border border-line bg-surface shadow-soft transition-[box-shadow,border-color] duration-300',
+        className,
+      )}
       {...props}
     >
       {children}
@@ -30,9 +33,11 @@ export function CardHeader({
   return (
     <div className={cn('flex flex-wrap items-start justify-between gap-3 px-5 pt-5', className)}>
       <div className="flex min-w-0 items-start gap-3">
-        {icon ? <div className="mt-0.5 rounded-lg bg-primary-soft p-2 text-primary">{icon}</div> : null}
+        {icon ? (
+          <div className="mt-0.5 rounded-xl bg-primary-soft p-2 text-primary ring-1 ring-primary/10">{icon}</div>
+        ) : null}
         <div className="min-w-0">
-          <h2 className="text-[15px] font-semibold tracking-[-0.01em] text-ink">{title}</h2>
+          <h2 className="text-[15px] font-semibold tracking-[-0.015em] text-ink">{title}</h2>
           {description ? <p className="mt-0.5 text-[13px] text-muted">{description}</p> : null}
         </div>
       </div>
@@ -119,7 +124,7 @@ export function Progress({ value, className, tone = 'primary' }: { value: number
     >
       <div
         className={cn(
-          'h-full rounded-full transition-all duration-500',
+          'h-full rounded-full transition-all duration-700 ease-out',
           tone === 'success' ? 'bg-ok' : tone === 'danger' ? 'bg-bad' : 'bg-primary',
         )}
         style={{ width: `${pct}%` }}
@@ -144,7 +149,7 @@ export function EmptyState({
   return (
     <div className={cn('flex flex-col items-center justify-center px-6 py-14 text-center', className)}>
       {icon ? (
-        <div className="mb-4 flex size-12 items-center justify-center rounded-2xl border border-line bg-surface-2 text-muted">
+        <div className="mb-4 flex size-12 items-center justify-center rounded-2xl border border-line bg-surface-2 text-muted shadow-soft">
           {icon}
         </div>
       ) : null}
@@ -162,9 +167,9 @@ export function Skeleton({ className }: { className?: string }) {
 export function PageHeader({ title, description, action }: { title: string; description?: string; action?: ReactNode }) {
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <h1 className="text-[22px] font-semibold tracking-[-0.02em] text-ink sm:text-[26px]">{title}</h1>
-        {description ? <p className="mt-1 max-w-2xl text-[13.5px] text-muted">{description}</p> : null}
+      <div className="min-w-0">
+        <h1 className="text-balance text-[23px] font-semibold tracking-[-0.03em] text-ink sm:text-[28px]">{title}</h1>
+        {description ? <p className="mt-1.5 max-w-2xl text-[13.5px] leading-relaxed text-muted">{description}</p> : null}
       </div>
       {action}
     </div>
@@ -194,7 +199,7 @@ export function Segmented<T extends string>({
           aria-selected={value === option.value}
           onClick={() => onChange(option.value)}
           className={cn(
-            'inline-flex items-center gap-1.5 rounded-lg font-medium transition-colors',
+            'inline-flex items-center gap-1.5 rounded-lg font-medium transition-[background-color,color,box-shadow] duration-200',
             size === 'sm' ? 'px-2.5 py-1 text-[12px]' : 'px-3 py-1.5 text-[12.5px]',
             value === option.value
               ? 'bg-surface text-ink shadow-soft'

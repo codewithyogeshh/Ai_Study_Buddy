@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { Award, BookOpen, CheckCircle2, Clock3, GraduationCap, Target, TrendingUp, Trophy } from 'lucide-react'
+import { Award, BookOpen, CheckCircle2, Clock3, GraduationCap, Target, Trash2, TrendingUp, Trophy } from 'lucide-react'
 
 import { ActivityChart, ScoreChart, TopicBars } from '../components/charts/Charts'
-import { buttonClasses } from '../components/ui/Button'
+import { Button, buttonClasses } from '../components/ui/Button'
 import { Alert, Badge, Card, CardHeader, EmptyState, PageHeader, Progress as ProgressBar, Skeleton } from '../components/ui/Card'
+import { Modal } from '../components/ui/Modal'
+import { useToast } from '../contexts/ToastContext'
 import { api, errorMessage } from '../lib/api'
 import { formatDate, formatMinutes } from '../lib/format'
 import type { ProgressData } from '../types'
@@ -12,17 +14,36 @@ import type { ProgressData } from '../types'
 export function Progress() {
   const [data, setData] = useState<ProgressData | null>(null)
   const [error, setError] = useState('')
+  const [confirmClear, setConfirmClear] = useState(false)
+  const [clearing, setClearing] = useState(false)
+  const { success, error: toastError } = useToast()
 
-  useEffect(() => {
-    let active = true
-    api
-      .get<ProgressData>('/analytics/progress')
-      .then((result) => active && setData(result))
-      .catch((err) => active && setError(errorMessage(err)))
-    return () => {
-      active = false
+  const load = useCallback(async () => {
+    try {
+      setData(await api.get<ProgressData>('/analytics/progress'))
+      setError('')
+    } catch (err) {
+      setError(errorMessage(err))
     }
   }, [])
+
+  useEffect(() => {
+    void load()
+  }, [load])
+
+  async function clearStudyTime() {
+    setClearing(true)
+    try {
+      await api.del('/analytics/sessions')
+      await load()
+      setConfirmClear(false)
+      success('Study time cleared.')
+    } catch (err) {
+      toastError(errorMessage(err))
+    } finally {
+      setClearing(false)
+    }
+  }
 
   const totals = data?.totals
   const cards = [
@@ -34,7 +55,15 @@ export function Progress() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Progress" description="Everything here is calculated from your own activity — quizzes, tasks and study sessions." />
+      <PageHeader
+        title="Progress"
+        description="Everything here is calculated from your own activity — quizzes, tasks and study sessions."
+        action={
+          <Button variant="secondary" size="sm" icon={<Trash2 className="size-3.5" />} onClick={() => setConfirmClear(true)}>
+            Clear study time
+          </Button>
+        }
+      />
       {error ? <Alert tone="error">{error}</Alert> : null}
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -225,6 +254,26 @@ export function Progress() {
       <p className="pb-2 text-center text-[11px] text-muted">
         Study time is logged from quizzes, chats, viva sessions and completed planner tasks.
       </p>
+
+      <Modal
+        open={confirmClear}
+        onClose={() => setConfirmClear(false)}
+        title="Clear study time?"
+        description="Every logged study session is removed from your progress. Documents, notes and quizzes are not affected."
+        size="sm"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setConfirmClear(false)}>
+              Cancel
+            </Button>
+            <Button variant="danger" loading={clearing} onClick={() => void clearStudyTime()}>
+              Clear study time
+            </Button>
+          </>
+        }
+      >
+        <p className="text-[13px] text-ink-soft">Study minutes and the sessions-by-activity breakdown reset to zero.</p>
+      </Modal>
     </div>
   )
 }

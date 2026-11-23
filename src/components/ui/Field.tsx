@@ -4,7 +4,7 @@ import { ChevronDown } from 'lucide-react'
 import { cn } from '../../lib/cn'
 
 const control =
-  'w-full rounded-lg border border-line-strong bg-surface px-3 text-sm text-ink placeholder:text-muted/80 transition focus:border-primary focus:outline-none focus:ring-4 focus:ring-[var(--ring)] disabled:opacity-60'
+  'w-full rounded-xl border border-line-strong bg-surface px-3 text-sm text-ink shadow-[inset_0_1px_2px_rgba(18,18,40,0.03)] placeholder:text-muted/75 transition-[border-color,box-shadow,background-color] duration-200 hover:border-muted/40 focus:border-primary focus:outline-none focus:ring-4 focus:ring-[var(--ring)] disabled:opacity-60'
 
 export function Label({ children, htmlFor, hint }: { children: ReactNode; htmlFor?: string; hint?: ReactNode }) {
   return (

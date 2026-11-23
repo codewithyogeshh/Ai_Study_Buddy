@@ -20,6 +20,7 @@ export function AuthShell({
       {/* Brand panel */}
       <div className="relative hidden overflow-hidden border-r border-line bg-bg-elevated p-10 lg:flex lg:flex-col">
         <div className="hero-glow absolute inset-0" aria-hidden />
+        <div className="pointer-events-none absolute -left-24 bottom-[-10%] size-[420px] rounded-full bg-accent/10 blur-[120px]" aria-hidden />
         <div className="relative">
           <Logo to="/" />
         </div>
@@ -33,7 +34,7 @@ export function AuthShell({
               { icon: GraduationCap, title: 'Practice that adapts', body: 'Quizzes and viva questions built from your material.' },
               { icon: Sparkles, title: 'An assistant that is honest', body: 'Grounded answers with page references — no invented facts.' },
             ].map((item) => (
-              <div key={item.title} className="flex gap-3 rounded-xl border border-line bg-surface p-4 shadow-soft">
+              <div key={item.title} className="flex gap-3 rounded-xl border border-line bg-surface/80 p-4 shadow-soft backdrop-blur-sm transition-[box-shadow,border-color] duration-300 hover:border-line-strong hover:shadow-raised">
                 <item.icon className="mt-0.5 size-4 shrink-0 text-primary" />
                 <div>
                   <p className="text-[13px] font-medium text-ink">{item.title}</p>

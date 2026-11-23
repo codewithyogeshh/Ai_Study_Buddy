@@ -7,14 +7,15 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'soft'
 type Size = 'sm' | 'md' | 'lg'
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary whitespace-nowrap'
+  'inline-flex select-none items-center justify-center gap-2 rounded-xl font-medium tracking-[-0.005em] transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-out active:translate-y-px active:scale-[0.985] disabled:pointer-events-none disabled:opacity-55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary whitespace-nowrap'
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-primary text-on-primary hover:bg-primary-hover shadow-soft',
-  secondary: 'border border-line-strong bg-surface text-ink hover:bg-surface-2',
+  primary: 'btn-primary bg-primary text-on-primary hover:brightness-[1.06]',
+  secondary:
+    'border border-line-strong bg-surface text-ink shadow-soft hover:border-primary/35 hover:bg-surface-2 hover:text-ink',
   ghost: 'text-muted hover:bg-surface-2 hover:text-ink',
-  danger: 'border border-bad/30 bg-bad-soft text-bad hover:bg-bad/15',
-  soft: 'bg-primary-soft text-primary hover:bg-primary/15',
+  danger: 'border border-bad/25 bg-bad-soft text-bad hover:border-bad/40 hover:bg-bad/15',
+  soft: 'bg-primary-soft text-primary hover:bg-primary/12',
 }
 
 const sizes: Record<Size, string> = {

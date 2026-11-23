@@ -38,13 +38,13 @@ export function Modal({
 
   return (
     <div className="fixed inset-0 z-[90] flex items-end justify-center p-0 sm:items-center sm:p-6">
-      <div className="absolute inset-0 animate-fade-in bg-black/45 backdrop-blur-[2px]" onClick={onClose} aria-hidden />
+      <div className="absolute inset-0 animate-fade-in bg-black/45 backdrop-blur-[6px]" onClick={onClose} aria-hidden />
       <div
         role="dialog"
         aria-modal="true"
         aria-label={title}
         className={cn(
-          'relative z-10 max-h-[92dvh] w-full animate-fade-up overflow-y-auto rounded-t-2xl border border-line bg-bg-elevated shadow-float scroll-thin sm:rounded-2xl',
+          'relative z-10 max-h-[92dvh] w-full animate-fade-up overflow-y-auto rounded-t-3xl border border-line/80 bg-bg-elevated shadow-float ring-1 ring-black/5 scroll-thin sm:rounded-2xl dark:ring-white/5',
           size === 'sm' ? 'sm:max-w-sm' : size === 'lg' ? 'sm:max-w-3xl' : 'sm:max-w-lg',
         )}
       >

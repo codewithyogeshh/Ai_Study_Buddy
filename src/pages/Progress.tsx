@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { Award, BookOpen, CheckCircle2, Clock3, GraduationCap, Target, Trash2, TrendingUp, Trophy } from 'lucide-react'
+import { Award, BookOpen, CheckCircle2, Clock3, GraduationCap, Sparkles, Target, Trash2, TrendingUp, Trophy } from 'lucide-react'
 
 import { ActivityChart, ScoreChart, TopicBars } from '../components/charts/Charts'
 import { Button, buttonClasses } from '../components/ui/Button'
@@ -11,16 +11,35 @@ import { api, errorMessage } from '../lib/api'
 import { formatDate, formatMinutes } from '../lib/format'
 import type { ProgressData } from '../types'
 
+type PastViva = {
+  id: string
+  subject: string
+  topic: string
+  difficulty: string
+  score: number | null
+  total: number | null
+  completed: boolean
+  createdAt: string
+}
+
 export function Progress() {
   const [data, setData] = useState<ProgressData | null>(null)
   const [error, setError] = useState('')
   const [confirmClear, setConfirmClear] = useState(false)
   const [clearing, setClearing] = useState(false)
+  const [vivas, setVivas] = useState<PastViva[] | null>(null)
+  const [pendingViva, setPendingViva] = useState<PastViva | null>(null)
+  const [deletingViva, setDeletingViva] = useState(false)
   const { success, error: toastError } = useToast()
 
   const load = useCallback(async () => {
     try {
-      setData(await api.get<ProgressData>('/analytics/progress'))
+      const [progressData, vivaData] = await Promise.all([
+        api.get<ProgressData>('/analytics/progress'),
+        api.get<{ sessions: PastViva[] }>('/viva'),
+      ])
+      setData(progressData)
+      setVivas(vivaData.sessions)
       setError('')
     } catch (err) {
       setError(errorMessage(err))
@@ -42,6 +61,20 @@ export function Progress() {
       toastError(errorMessage(err))
     } finally {
       setClearing(false)
+    }
+  }
+
+  async function deleteViva(item: PastViva) {
+    setDeletingViva(true)
+    try {
+      await api.del(`/viva/${item.id}`)
+      setPendingViva(null)
+      await load()
+      success('Viva session deleted.')
+    } catch (err) {
+      toastError(errorMessage(err))
+    } finally {
+      setDeletingViva(false)
     }
   }
 
@@ -251,9 +284,80 @@ export function Progress() {
         </div>
       </Card>
 
+      <Card>
+        <CardHeader
+          title="Viva sessions"
+          description="Finished practice sessions and the study time they logged"
+          icon={<Sparkles className="size-4" />}
+        />
+        <div className="px-5 pb-5 pt-3">
+          {!vivas ? (
+            <Skeleton className="h-16 w-full" />
+          ) : vivas.length === 0 ? (
+            <p className="text-[13px] text-muted">No viva sessions yet.</p>
+          ) : (
+            <ul className="divide-y divide-line">
+              {vivas.map((item) => (
+                <li key={item.id} className="flex items-center gap-3 py-2.5">
+                  <div className="min-w-0 flex-1">
+                    <Link
+                      to={`/app/viva/${item.id}`}
+                      className="block truncate text-[13px] font-medium text-ink hover:text-primary"
+                    >
+                      {item.subject} — {item.topic}
+                    </Link>
+                    <p className="mt-0.5 text-[11px] capitalize text-muted">
+                      {item.difficulty} · {formatDate(item.createdAt)}
+                    </p>
+                  </div>
+                  {item.completed && item.total ? (
+                    <Badge tone={item.score && item.score / item.total >= 0.7 ? 'success' : 'warn'}>
+                      {item.score}/{item.total}
+                    </Badge>
+                  ) : (
+                    <Badge>In progress</Badge>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setPendingViva(item)}
+                    aria-label={`Delete viva ${item.subject} ${item.topic}`}
+                    title="Delete session"
+                  >
+                    <Trash2 className="size-3.5" />
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </Card>
+
       <p className="pb-2 text-center text-[11px] text-muted">
         Study time is logged from quizzes, chats, viva sessions and completed planner tasks.
       </p>
+
+      <Modal
+        open={Boolean(pendingViva)}
+        onClose={() => setPendingViva(null)}
+        title="Delete this viva session?"
+        description="The report, the answers and the study time it logged are removed. This cannot be undone."
+        size="sm"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setPendingViva(null)}>
+              Cancel
+            </Button>
+            <Button variant="danger" loading={deletingViva} onClick={() => pendingViva && void deleteViva(pendingViva)}>
+              Delete session
+            </Button>
+          </>
+        }
+      >
+        <p className="text-[13px] text-ink-soft">
+          {pendingViva ? `${pendingViva.subject} — ${pendingViva.topic}` : ''}
+        </p>
+      </Modal>
 
       <Modal
         open={confirmClear}

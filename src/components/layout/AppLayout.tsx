@@ -52,7 +52,7 @@ export function AppLayout() {
 
   const sidebar = (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center justify-between px-5">
+      <div className="flex h-16 items-center justify-between border-b border-line/60 px-5">
         <Logo />
         <button
           onClick={() => setMobileOpen(false)}
@@ -71,18 +71,30 @@ export function AppLayout() {
             end={item.end}
             className={({ isActive }) =>
               cn(
-                'group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] font-medium transition-colors',
+                'group relative flex items-center gap-2.5 rounded-xl px-3 py-2 text-[13.5px] font-medium transition-[background-color,color,box-shadow] duration-200',
                 isActive
-                  ? 'bg-primary-soft text-primary'
+                  ? 'bg-primary-soft text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-primary/12'
                   : 'text-ink-soft hover:bg-surface-2 hover:text-ink',
               )
             }
           >
             {({ isActive }) => (
               <>
-                <item.icon className={cn('size-[17px]', isActive ? 'text-primary' : 'text-muted group-hover:text-ink')} />
+                <span
+                  className={cn(
+                    'absolute left-0 top-1/2 h-4 w-[3px] -translate-y-1/2 rounded-full bg-primary transition-opacity duration-200',
+                    isActive ? 'opacity-100' : 'opacity-0',
+                  )}
+                  aria-hidden
+                />
+                <item.icon
+                  className={cn(
+                    'size-[17px] transition-transform duration-200 group-hover:scale-105',
+                    isActive ? 'text-primary' : 'text-muted group-hover:text-ink',
+                  )}
+                />
                 <span className="flex-1">{item.label}</span>
-                {isActive ? <ChevronRight className="size-3.5 opacity-60" /> : null}
+                {isActive ? <ChevronRight className="size-3.5 opacity-50" /> : null}
               </>
             )}
           </NavLink>
@@ -94,8 +106,8 @@ export function AppLayout() {
           to="/app/settings"
           className={({ isActive }) =>
             cn(
-              'flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] font-medium transition-colors',
-              isActive ? 'bg-primary-soft text-primary' : 'text-ink-soft hover:bg-surface-2 hover:text-ink',
+              'flex items-center gap-2.5 rounded-xl px-3 py-2 text-[13.5px] font-medium transition-[background-color,color] duration-200',
+              isActive ? 'bg-primary-soft text-primary ring-1 ring-primary/12' : 'text-ink-soft hover:bg-surface-2 hover:text-ink',
             )
           }
         >
@@ -103,8 +115,8 @@ export function AppLayout() {
           Profile & settings
         </NavLink>
 
-        <div className="mt-2 flex items-center gap-2 rounded-xl border border-line bg-surface-2 p-2">
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-[12px] font-semibold text-on-primary">
+        <div className="mt-2 flex items-center gap-2 rounded-xl border border-line bg-surface-2/70 p-2 shadow-soft">
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-[12px] font-semibold text-on-primary ring-2 ring-primary/15 ring-offset-1 ring-offset-bg-elevated">
             {initials(user?.name ?? 'Student')}
           </div>
           <div className="min-w-0 flex-1">
@@ -130,7 +142,7 @@ export function AppLayout() {
   return (
     <div className="min-h-dvh bg-bg">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] border-r border-line bg-bg-elevated lg:block">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] border-r border-line/80 bg-bg-elevated/75 backdrop-blur-xl lg:block">
         {sidebar}
       </aside>
 
@@ -145,7 +157,7 @@ export function AppLayout() {
       ) : null}
 
       <div className="lg:pl-[248px]">
-        <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-line bg-bg/85 px-4 backdrop-blur-md sm:px-6">
+        <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-line/70 bg-bg/70 px-4 backdrop-blur-xl sm:px-6">
           <button
             onClick={() => setMobileOpen(true)}
             className="rounded-md p-1.5 text-muted hover:bg-surface-2 hover:text-ink lg:hidden"
@@ -168,7 +180,7 @@ export function AppLayout() {
             </button>
             <Link
               to="/app/documents"
-              className="hidden items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-[13px] font-medium text-on-primary transition hover:bg-primary-hover sm:inline-flex"
+              className="btn-primary hidden items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-[13px] font-medium text-on-primary transition hover:brightness-[1.06] sm:inline-flex"
             >
               <FileText className="size-4" />
               Upload

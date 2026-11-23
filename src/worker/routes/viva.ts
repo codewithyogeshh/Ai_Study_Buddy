@@ -122,6 +122,16 @@ vivaRoutes.get('/:id', async (c) => {
   return c.json({ session: view(row), summary: row.completed_at ? buildSummary(evaluations, questions) : null })
 })
 
+vivaRoutes.delete('/:id', async (c) => {
+  const row = await ownedViva(c.env, c.get('userId'), c.req.param('id'))
+  // The session logged study time when it was finished; remove that entry too.
+  await c.env.DB.prepare("DELETE FROM study_sessions WHERE user_id = ? AND source = 'viva' AND subject = ? AND topic = ?")
+    .bind(row.user_id, row.subject, row.topic)
+    .run()
+  await c.env.DB.prepare('DELETE FROM viva_sessions WHERE id = ? AND user_id = ?').bind(row.id, row.user_id).run()
+  return c.json({ ok: true })
+})
+
 vivaRoutes.post('/start', async (c) => {
   const userId = c.get('userId')
   const body = await readJson(c)

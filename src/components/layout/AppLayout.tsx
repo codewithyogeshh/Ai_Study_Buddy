@@ -171,6 +171,14 @@ export function AppLayout() {
 
           <div className="ml-auto flex items-center gap-1.5">
             <button
+              onClick={() => window.dispatchEvent(new Event('assistant:toggle'))}
+              className="rounded-lg p-2 text-primary transition hover:bg-primary-soft sm:hidden"
+              aria-label="Open AI assistant"
+              title="Ask AI"
+            >
+              <Sparkles className="size-[18px]" />
+            </button>
+            <button
               onClick={toggle}
               className="rounded-lg p-2 text-muted transition hover:bg-surface-2 hover:text-ink"
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}

@@ -174,7 +174,7 @@ export function Planner() {
         </Alert>
       ) : null}
 
-      <div className="grid gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
           { label: 'Total tasks', value: counts.total, tone: 'text-ink' },
           { label: 'Completed', value: counts.completed, tone: 'text-ok' },

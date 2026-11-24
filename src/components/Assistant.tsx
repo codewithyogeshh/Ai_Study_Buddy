@@ -58,6 +58,12 @@ export function Assistant() {
     if (open) endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [turns, open, busy])
 
+  useEffect(() => {
+    const toggle = () => setOpen((value) => !value)
+    window.addEventListener('assistant:toggle', toggle)
+    return () => window.removeEventListener('assistant:toggle', toggle)
+  }, [])
+
   async function send() {
     const question = prompt.trim()
     if (!question || busy) return
@@ -91,7 +97,7 @@ export function Assistant() {
     <>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-[13px] font-medium text-on-primary shadow-float transition hover:bg-primary-hover"
+        className="fixed bottom-5 right-5 z-40 hidden items-center gap-2 rounded-full bg-primary px-4 py-3 text-[13px] font-medium text-on-primary shadow-float transition hover:bg-primary-hover sm:inline-flex"
         aria-label={open ? 'Close AI assistant' : 'Open AI assistant'}
       >
         {open ? <X className="size-4" /> : <Sparkles className="size-4" />}

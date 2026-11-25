@@ -127,8 +127,8 @@ export function Landing() {
         {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-            <div className="absolute -top-64 left-1/2 size-[860px] -translate-x-1/2 rounded-full bg-primary/20 blur-[150px] opacity-80" />
-            <div className="absolute -top-40 right-[-12%] size-[460px] rounded-full bg-accent/15 blur-[140px]" />
+            <div className="absolute -top-64 left-1/2 size-[860px] -translate-x-1/2 rounded-full bg-primary/10 blur-[150px] opacity-70" />
+            <div className="absolute -top-40 right-[-12%] size-[460px] rounded-full bg-accent/[0.07] blur-[140px]" />
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
           </div>
           <div className="mx-auto max-w-6xl px-4 pb-16 pt-14 sm:px-6 sm:pb-24 sm:pt-20">

@@ -20,7 +20,7 @@ export function AuthShell({
       {/* Brand panel */}
       <div className="relative hidden overflow-hidden border-r border-line bg-bg-elevated p-10 lg:flex lg:flex-col">
         <div className="hero-glow absolute inset-0" aria-hidden />
-        <div className="pointer-events-none absolute -left-24 bottom-[-10%] size-[420px] rounded-full bg-accent/10 blur-[120px]" aria-hidden />
+        <div className="pointer-events-none absolute -left-24 bottom-[-10%] size-[420px] rounded-full bg-accent/[0.07] blur-[120px]" aria-hidden />
         <div className="relative">
           <Logo to="/" />
         </div>
